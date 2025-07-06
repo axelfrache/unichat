@@ -203,10 +203,6 @@ npm test
     {
       "name": "description",
       "type": "text"
-    },
-    {
-      "name": "color",
-      "type": "text"
     }
   ]
 }

@@ -70,10 +70,6 @@ import { AuthService } from '../auth/auth.service';
               <div class="flex items-start justify-between">
                 <div class="flex-1">
                   <h2 class="card-title">
-                    <div 
-                      class="w-4 h-4 rounded-full"
-                      [style.background-color]="category.color || '#3B82F6'"
-                    ></div>
                     {{ category.name }}
                   </h2>
                   <p class="text-base-content/70 text-sm mt-2" *ngIf="category.description">
@@ -163,25 +159,6 @@ import { AuthService } from '../auth/auth.service';
                 </label>
               </div>
 
-              <!-- Color -->
-              <div class="form-control w-full mt-4">
-                <label class="label">
-                  <span class="label-text">Couleur</span>
-                </label>
-                <div class="flex flex-wrap gap-2">
-                  <div *ngFor="let color of predefinedColors" 
-                       class="w-8 h-8 rounded-full cursor-pointer border-2 flex items-center justify-center"
-                       [style.background-color]="color"
-                       [class.border-base-content]="categoryData.color === color"
-                       [class.border-base-300]="categoryData.color !== color"
-                       (click)="selectColor(color)">
-                    <svg *ngIf="categoryData.color === color" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
               <!-- Error Message -->
               <div *ngIf="errorMessage" class="alert alert-error mt-4">
                 <span>{{ errorMessage }}</span>
@@ -246,24 +223,8 @@ export class CategoriesListComponent implements OnInit {
 
   categoryData = {
     name: '',
-    description: '',
-    color: '#3B82F6'
+    description: ''
   };
-
-  predefinedColors = [
-    '#3B82F6', // Blue
-    '#EF4444', // Red
-    '#10B981', // Green
-    '#F59E0B', // Yellow
-    '#8B5CF6', // Purple
-    '#F97316', // Orange
-    '#06B6D4', // Cyan
-    '#EC4899', // Pink
-    '#84CC16', // Lime
-    '#6366F1', // Indigo
-    '#14B8A6', // Teal
-    '#F43F5E'  // Rose
-  ];
 
   constructor(
     private pocketbaseApi: PocketbaseApiService,
@@ -294,8 +255,7 @@ export class CategoriesListComponent implements OnInit {
     this.editingCategory = null;
     this.categoryData = {
       name: '',
-      description: '',
-      color: '#3B82F6'
+      description: ''
     };
     this.errorMessage = '';
     this.showModal = true;
@@ -305,8 +265,7 @@ export class CategoriesListComponent implements OnInit {
     this.editingCategory = category;
     this.categoryData = {
       name: category.name,
-      description: category.description || '',
-      color: category.color || '#3B82F6'
+      description: category.description || ''
     };
     this.errorMessage = '';
     this.showModal = true;
@@ -316,10 +275,6 @@ export class CategoriesListComponent implements OnInit {
     this.showModal = false;
     this.editingCategory = null;
     this.errorMessage = '';
-  }
-
-  selectColor(color: string): void {
-    this.categoryData.color = color;
   }
 
   onSubmit(): void {
@@ -333,8 +288,7 @@ export class CategoriesListComponent implements OnInit {
 
     const categoryPayload = {
       name: this.categoryData.name.trim(),
-      description: this.categoryData.description.trim() || undefined,
-      color: this.categoryData.color
+      description: this.categoryData.description.trim() || undefined
     };
 
     const operation = this.editingCategory
