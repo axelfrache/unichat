@@ -22,8 +22,6 @@ Consultez les sections [Installation](#installation) et [Configuration](#configu
 
 **Fichiers de configuration disponibles :**
 - `pb_schema.json` - Schéma complet de la base de données PocketBase
-- `test_data.json` - Données de test optionnelles
-- `GUIDE_UTILISATION.md` - Guide d'utilisation détaillé
 
 ## Table des matières
 
