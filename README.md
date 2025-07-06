@@ -15,7 +15,6 @@ Une application de forum universitaire moderne construite avec Angular 20, Tailw
 - [Configuration](#configuration)
 - [Utilisation](#utilisation)
 - [Structure du projet](#structure-du-projet)
-- [Déploiement](#déploiement)
 
 ## Fonctionnalités
 
