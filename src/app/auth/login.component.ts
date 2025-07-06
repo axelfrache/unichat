@@ -23,7 +23,6 @@ import { AuthService } from './auth.service';
                 type="email" 
                 [(ngModel)]="email" 
                 name="email"
-                placeholder="your.email@university.edu" 
                 class="input input-bordered w-full" 
                 required
                 #emailInput="ngModel"
@@ -41,7 +40,6 @@ import { AuthService } from './auth.service';
                 type="password" 
                 [(ngModel)]="password" 
                 name="password"
-                placeholder="••••••••" 
                 class="input input-bordered w-full" 
                 required
                 minlength="6"
@@ -100,7 +98,6 @@ import { AuthService } from './auth.service';
                 type="text" 
                 [(ngModel)]="registerData.username" 
                 name="username"
-                placeholder="john_doe" 
                 class="input input-bordered w-full" 
                 required
                 minlength="3"
@@ -115,7 +112,6 @@ import { AuthService } from './auth.service';
                 type="text" 
                 [(ngModel)]="registerData.name" 
                 name="name"
-                placeholder="John Doe" 
                 class="input input-bordered w-full"
               />
             </div>
@@ -128,7 +124,6 @@ import { AuthService } from './auth.service';
                 type="email" 
                 [(ngModel)]="registerData.email" 
                 name="registerEmail"
-                placeholder="john.doe@university.edu" 
                 class="input input-bordered w-full" 
                 required
               />
@@ -142,7 +137,6 @@ import { AuthService } from './auth.service';
                 type="password" 
                 [(ngModel)]="registerData.password" 
                 name="registerPassword"
-                placeholder="••••••••" 
                 class="input input-bordered w-full" 
                 required
                 minlength="6"
@@ -157,7 +151,6 @@ import { AuthService } from './auth.service';
                 type="password" 
                 [(ngModel)]="registerData.passwordConfirm" 
                 name="passwordConfirm"
-                placeholder="••••••••" 
                 class="input input-bordered w-full" 
                 required
                 minlength="6"

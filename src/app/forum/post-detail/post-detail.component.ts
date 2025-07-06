@@ -27,12 +27,12 @@ import { AuthService } from '../../auth/auth.service';
         <div class="navbar-end">
           <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-              <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-primary text-primary-content font-semibold text-sm" style="display: flex; align-items: center; justify-content: center; line-height: 1;">
                 {{ getUserInitials() }}
               </div>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-              <li><a>{{ currentUser?.username }}</a></li>
+              <li><a>{{ currentUser?.email }}</a></li>
               <li><a (click)="logout()">Déconnexion</a></li>
             </ul>
           </div>
@@ -56,11 +56,11 @@ import { AuthService } from '../../auth/auth.service';
                   <div class="flex items-center gap-4 text-sm text-base-content/70">
                     <div class="flex items-center gap-2">
                       <div class="avatar">
-                        <div class="w-8 h-8 rounded-full bg-primary text-primary-content flex items-center justify-center text-xs">
+                        <div class="w-8 h-8 rounded-full bg-primary text-primary-content font-semibold text-xs" style="display: flex; align-items: center; justify-content: center; line-height: 1;">
                           {{ getAuthorInitials(post.expand?.author) }}
                         </div>
                       </div>
-                      <span class="font-medium">{{ post.expand?.author?.username || 'Utilisateur' }}</span>
+                      <span class="font-medium">{{ post.expand?.author?.email || 'Utilisateur' }}</span>
                     </div>
                     <span>{{ formatDate(post.created) }}</span>
                   </div>
@@ -105,7 +105,6 @@ import { AuthService } from '../../auth/auth.service';
                       [(ngModel)]="newCommentContent"
                       name="comment"
                       class="textarea textarea-bordered h-24" 
-                      placeholder="Écrivez votre commentaire..."
                       required
                       minlength="1"
                     ></textarea>
@@ -134,11 +133,11 @@ import { AuthService } from '../../auth/auth.service';
                   <div class="flex items-start justify-between">
                     <div class="flex items-center gap-2 mb-2">
                       <div class="avatar">
-                        <div class="w-6 h-6 rounded-full bg-primary text-primary-content flex items-center justify-center text-xs">
+                        <div class="w-6 h-6 rounded-full bg-primary text-primary-content font-semibold text-xs" style="display: flex; align-items: center; justify-content: center; line-height: 1;">
                           {{ getAuthorInitials(comment.expand?.author) }}
                         </div>
                       </div>
-                      <span class="font-medium text-sm">{{ comment.expand?.author?.username || 'Utilisateur' }}</span>
+                      <span class="font-medium text-sm">{{ comment.expand?.author?.email || 'Utilisateur' }}</span>
                       <span class="text-xs text-base-content/50">{{ formatDate(comment.created) }}</span>
                     </div>
                     
@@ -368,13 +367,13 @@ export class PostDetailComponent implements OnInit {
   }
 
   getUserInitials(): string {
-    if (!this.currentUser?.username) return 'U';
-    return this.currentUser.username.substring(0, 2).toUpperCase();
+    if (!this.currentUser?.email) return 'U';
+    return this.currentUser.email.charAt(0).toUpperCase();
   }
 
   getAuthorInitials(author: any): string {
-    if (!author?.username) return 'U';
-    return author.username.substring(0, 2).toUpperCase();
+    if (!author?.email) return 'U';
+    return author.email.charAt(0).toUpperCase();
   }
 
   formatDate(dateString: string | undefined): string {

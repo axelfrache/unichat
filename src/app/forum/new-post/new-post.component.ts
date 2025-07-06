@@ -27,12 +27,12 @@ import { AuthService } from '../../auth/auth.service';
         <div class="navbar-end">
           <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-              <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-primary text-primary-content font-semibold text-sm" style="display: flex; align-items: center; justify-content: center; line-height: 1;">
                 {{ getUserInitials() }}
               </div>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-              <li><a>{{ currentUser?.username }}</a></li>
+              <li><a>{{ currentUser?.email }}</a></li>
               <li><a (click)="logout()">Déconnexion</a></li>
             </ul>
           </div>
@@ -60,7 +60,6 @@ import { AuthService } from '../../auth/auth.service';
                   type="text" 
                   [(ngModel)]="postData.title"
                   name="title"
-                  placeholder="Donnez un titre accrocheur à votre post..." 
                   class="input input-bordered w-full" 
                   required
                   minlength="5"
@@ -106,27 +105,22 @@ import { AuthService } from '../../auth/auth.service';
               </div>
 
               <!-- Content -->
-              <div class="form-control w-full mt-4">
+              <div class="form-control w-full mt-6">
                 <label class="label">
-                  <span class="label-text font-medium">Contenu</span>
+                  <span class="label-text font-medium text-lg">Contenu</span>
                   <span class="label-text-alt text-error">*</span>
                 </label>
-                <textarea 
-                  [(ngModel)]="postData.content"
-                  name="content"
-                  class="textarea textarea-bordered h-40" 
-                  placeholder="Écrivez le contenu de votre post ici...
-
-💡 Quelques conseils :
-• Soyez clair et précis
-• Utilisez des paragraphes pour aérer votre texte
-• N'hésitez pas à poser des questions
-• Respectez les autres utilisateurs"
-                  required
-                  minlength="10"
-                  maxlength="5000"
-                  #contentInput="ngModel"
-                ></textarea>
+                <div class="mt-2">
+                  <textarea 
+                    [(ngModel)]="postData.content"
+                    name="content"
+                    class="textarea textarea-bordered w-full h-48 resize-none" 
+                    required
+                    minlength="10"
+                    maxlength="5000"
+                    #contentInput="ngModel"
+                  ></textarea>
+                </div>
                 <label class="label">
                   <span class="label-text-alt text-error" *ngIf="contentInput.invalid && contentInput.touched">
                     Le contenu doit contenir entre 10 et 5000 caractères
@@ -146,11 +140,11 @@ import { AuthService } from '../../auth/auth.service';
                         <div class="flex items-center gap-4 text-sm text-base-content/70 mt-2">
                           <div class="flex items-center gap-2">
                             <div class="avatar">
-                              <div class="w-6 h-6 rounded-full bg-primary text-primary-content flex items-center justify-center text-xs">
+                              <div class="w-6 h-6 rounded-full bg-primary text-primary-content font-semibold text-xs" style="display: flex; align-items: center; justify-content: center; line-height: 1;">
                                 {{ getUserInitials() }}
                               </div>
                             </div>
-                            <span class="font-medium">{{ currentUser?.username }}</span>
+                            <span class="font-medium">{{ currentUser?.email }}</span>
                           </div>
                           <span>À l'instant</span>
                         </div>
@@ -187,18 +181,6 @@ import { AuthService } from '../../auth/auth.service';
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                     {{ getPreviewButtonText() }}
-                  </button>
-                  
-                  <button 
-                    type="button" 
-                    class="btn btn-ghost btn-sm"
-                    (click)="saveDraft()"
-                    [disabled]="!postData.title && !postData.content"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
-                    Sauvegarder le brouillon
                   </button>
                 </div>
 
@@ -267,7 +249,6 @@ export class NewPostComponent implements OnInit {
     private router: Router
   ) {
     this.currentUser = this.authService.currentUser;
-    this.loadDraft();
   }
 
   ngOnInit(): void {
@@ -299,26 +280,6 @@ export class NewPostComponent implements OnInit {
     return this.showPreview ? 'Masquer l\'aperçu' : 'Voir l\'aperçu';
   }
 
-  saveDraft(): void {
-    localStorage.setItem('newPostDraft', JSON.stringify(this.postData));
-    // Could show a toast notification here
-  }
-
-  loadDraft(): void {
-    const draft = localStorage.getItem('newPostDraft');
-    if (draft) {
-      try {
-        this.postData = JSON.parse(draft);
-      } catch (error) {
-        console.error('Erreur lors du chargement du brouillon:', error);
-      }
-    }
-  }
-
-  clearDraft(): void {
-    localStorage.removeItem('newPostDraft');
-  }
-
   onSubmit(): void {
     if (!this.currentUser) {
       this.errorMessage = 'Vous devez être connecté pour publier un post';
@@ -342,7 +303,6 @@ export class NewPostComponent implements OnInit {
 
     this.pocketbaseApi.createPost(post).subscribe({
       next: (createdPost) => {
-        this.clearDraft();
         this.router.navigate(['/forum/post', createdPost.id]);
       },
       error: (error) => {
@@ -357,8 +317,8 @@ export class NewPostComponent implements OnInit {
   }
 
   getUserInitials(): string {
-    if (!this.currentUser?.username) return 'U';
-    return this.currentUser.username.substring(0, 2).toUpperCase();
+    if (!this.currentUser?.email) return 'U';
+    return this.currentUser.email.charAt(0).toUpperCase();
   }
 
   logout(): void {

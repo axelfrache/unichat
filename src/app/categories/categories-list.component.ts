@@ -27,12 +27,12 @@ import { AuthService } from '../auth/auth.service';
         <div class="navbar-end">
           <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-              <div class="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-primary text-primary-content font-semibold text-sm" style="display: flex; align-items: center; justify-content: center; line-height: 1;">
                 {{ getUserInitials() }}
               </div>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-              <li><a>{{ currentUser?.username }}</a></li>
+              <li><a>{{ currentUser?.email }}</a></li>
               <li><a (click)="logout()">Déconnexion</a></li>
             </ul>
           </div>
@@ -133,7 +133,6 @@ import { AuthService } from '../auth/auth.service';
                   type="text" 
                   [(ngModel)]="categoryData.name"
                   name="name"
-                  placeholder="ex: Questions académiques" 
                   class="input input-bordered w-full" 
                   required
                   minlength="2"
@@ -157,7 +156,6 @@ import { AuthService } from '../auth/auth.service';
                   [(ngModel)]="categoryData.description"
                   name="description"
                   class="textarea textarea-bordered h-20" 
-                  placeholder="Décrivez brièvement cette catégorie..."
                   maxlength="200"
                 ></textarea>
                 <label class="label">
@@ -400,8 +398,8 @@ export class CategoriesListComponent implements OnInit {
   }
 
   getUserInitials(): string {
-    if (!this.currentUser?.username) return 'U';
-    return this.currentUser.username.substring(0, 2).toUpperCase();
+    if (!this.currentUser?.email) return 'U';
+    return this.currentUser.email.charAt(0).toUpperCase();
   }
 
   logout(): void {
