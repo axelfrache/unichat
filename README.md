@@ -7,6 +7,24 @@ Une application de forum universitaire moderne construite avec Angular 20, Tailw
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.0-cyan?style=flat-square&logo=tailwindcss)
 ![DaisyUI](https://img.shields.io/badge/DaisyUI-5.0-green?style=flat-square)
 
+## 🚀 Installation rapide
+
+UniChat nécessite un backend PocketBase pour fonctionner. Vous avez deux options :
+
+### Option 1 : Utiliser une instance PocketBase existante
+Si vous avez déjà PocketBase installé :
+1. Importez le schéma : **`pb_schema.json`**
+2. Lancez PocketBase sur le port 8090
+3. Installez et démarrez le frontend (voir ci-dessous)
+
+### Option 2 : Installation complète
+Consultez les sections [Installation](#installation) et [Configuration](#configuration) pour une installation pas à pas.
+
+**Fichiers de configuration disponibles :**
+- `pb_schema.json` - Schéma complet de la base de données PocketBase
+- `test_data.json` - Données de test optionnelles
+- `GUIDE_UTILISATION.md` - Guide d'utilisation détaillé
+
 ## Table des matières
 
 - [Fonctionnalités](#fonctionnalités)
@@ -94,22 +112,62 @@ Naviguer vers [http://localhost:4200](http://localhost:4200)
 
 ### Configuration PocketBase
 
+UniChat utilise PocketBase comme backend. Vous pouvez l'installer et le configurer de deux façons :
+
+#### Option A : Import automatique du schéma (Recommandé)
+
 1. **Télécharger PocketBase**
 ```bash
 # Linux/macOS
-wget https://github.com/pocketbase/pocketbase/releases/download/v0.20.0/pocketbase_0.20.0_linux_amd64.zip
-unzip pocketbase_0.20.0_linux_amd64.zip
+wget https://github.com/pocketbase/pocketbase/releases/download/v0.28.4/pocketbase_0.28.4_linux_amd64.zip
+unzip pocketbase_0.28.4_linux_amd64.zip
+
+# Windows
+# Télécharger depuis : https://github.com/pocketbase/pocketbase/releases
 ```
 
-2. **Lancer PocketBase**
+2. **Importer le schéma**
 ```bash
+# Démarrer PocketBase
 ./pocketbase serve
+
+# Dans un autre terminal, importer le schéma
+curl -X POST http://127.0.0.1:8090/api/collections/import \
+  -F "collections=@pb_schema.json" \
+  -H "Authorization: Bearer YOUR_ADMIN_TOKEN"
 ```
 
-3. **Configuration initiale**
+Ou via l'interface web :
 - Accéder à [http://127.0.0.1:8090/_/](http://127.0.0.1:8090/_/)
 - Créer un compte admin
-- Configurer les collections suivantes :
+- Aller dans **Settings > Import collections**
+- Importer le fichier `pb_schema.json`
+
+#### Option B : Configuration manuelle
+
+Si vous préférez configurer manuellement, consultez la section détaillée ci-dessous.
+
+### Configuration Frontend
+
+1. **Variables d'environnement**
+Créer un fichier `src/environments/environment.ts` :
+```typescript
+export const environment = {
+  production: false,
+  pocketbaseUrl: 'http://127.0.0.1:8090'
+};
+```
+
+2. **Vérifier la configuration**
+```bash
+# Tester le build
+npm run build
+
+# Lancer les tests (optionnel)
+npm test
+```
+
+### Configuration manuelle PocketBase (Détaillée)
 
 #### Collection `users`
 ```json
