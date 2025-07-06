@@ -3,13 +3,33 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
+import { ThemeService } from '../services/theme.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="min-h-screen bg-base-200 flex items-center justify-center p-4">
+    <div class="min-h-screen bg-base-200 flex items-center justify-center p-4 relative">
+      <!-- Theme Toggle (top-right corner) -->
+      <button 
+        class="btn btn-ghost btn-circle absolute top-4 right-4"
+        (click)="toggleTheme()"
+        [title]="themeService.isDarkMode() ? 'Passer en mode clair' : 'Passer en mode sombre'"
+      >
+        @if (themeService.isDarkMode()) {
+          <!-- Sun icon for light mode -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        } @else {
+          <!-- Moon icon for dark mode -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        }
+      </button>
+      
       <div class="card w-full max-w-sm bg-base-100 shadow-xl">
         <div class="card-body">
           <h2 class="card-title text-center text-2xl font-bold mb-6">UniChat</h2>
@@ -216,7 +236,8 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    public themeService: ThemeService
   ) {}
 
   onSubmit(): void {
@@ -277,5 +298,9 @@ export class LoginComponent {
         this.isRegistering = false;
       }
     });
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
   }
 }
