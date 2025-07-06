@@ -67,9 +67,11 @@ import { AuthService } from '../../auth/auth.service';
                   #titleInput="ngModel"
                 />
                 <label class="label">
-                  <span class="label-text-alt text-error" *ngIf="titleInput.invalid && titleInput.touched">
-                    Le titre doit contenir entre 5 et 200 caractères
-                  </span>
+                  @if (titleInput.invalid && titleInput.touched) {
+                    <span class="label-text-alt text-error">
+                      Le titre doit contenir entre 5 et 200 caractères
+                    </span>
+                  }
                   <span class="label-text-alt">{{ postData.title.length }}/200</span>
                 </label>
               </div>
@@ -88,14 +90,18 @@ import { AuthService } from '../../auth/auth.service';
                   #categoryInput="ngModel"
                 >
                   <option value="" disabled>Choisissez une catégorie</option>
-                  <option *ngFor="let category of categories" [value]="category.id">
-                    {{ category.name }}
-                  </option>
+                  @for (category of categories; track category.id) {
+                    <option [value]="category.id">
+                      {{ category.name }}
+                    </option>
+                  }
                 </select>
                 <label class="label">
-                  <span class="label-text-alt text-error" *ngIf="categoryInput.invalid && categoryInput.touched">
-                    Veuillez sélectionner une catégorie
-                  </span>
+                  @if (categoryInput.invalid && categoryInput.touched) {
+                    <span class="label-text-alt text-error">
+                      Veuillez sélectionner une catégorie
+                    </span>
+                  }
                   <span class="label-text-alt">
                     <a [routerLink]="['/forum/categories']" class="link link-primary">
                       Gérer les catégories
@@ -122,51 +128,57 @@ import { AuthService } from '../../auth/auth.service';
                   ></textarea>
                 </div>
                 <label class="label">
-                  <span class="label-text-alt text-error" *ngIf="contentInput.invalid && contentInput.touched">
-                    Le contenu doit contenir entre 10 et 5000 caractères
-                  </span>
+                  @if (contentInput.invalid && contentInput.touched) {
+                    <span class="label-text-alt text-error">
+                      Le contenu doit contenir entre 10 et 5000 caractères
+                    </span>
+                  }
                   <span class="label-text-alt">{{ postData.content.length }}/5000</span>
                 </label>
               </div>
 
-              <!-- Preview -->
-              <div *ngIf="showPreview && postData.title && postData.content" class="mt-6">
-                <div class="divider">Aperçu</div>
-                <div class="card bg-base-200 shadow-sm">
-                  <div class="card-body">
-                    <div class="flex items-start justify-between mb-4">
-                      <div class="flex-1">
-                        <h3 class="text-lg font-bold">{{ postData.title }}</h3>
-                        <div class="flex items-center gap-4 text-sm text-base-content/70 mt-2">
-                          <div class="flex items-center gap-2">
-                            <div class="avatar">
-                              <div class="w-6 h-6 rounded-full bg-primary text-primary-content font-semibold text-xs" style="display: flex; align-items: center; justify-content: center; line-height: 1;">
-                                {{ getUserInitials() }}
+              @if (showPreview && postData.title && postData.content) {
+                <div class="mt-6">
+                  <div class="divider">Aperçu</div>
+                  <div class="card bg-base-200 shadow-sm">
+                    <div class="card-body">
+                      <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                          <h3 class="text-lg font-bold">{{ postData.title }}</h3>
+                          <div class="flex items-center gap-4 text-sm text-base-content/70 mt-2">
+                            <div class="flex items-center gap-2">
+                              <div class="avatar">
+                                <div class="w-6 h-6 rounded-full bg-primary text-primary-content font-semibold text-xs" style="display: flex; align-items: center; justify-content: center; line-height: 1;">
+                                  {{ getUserInitials() }}
+                                </div>
                               </div>
+                              <span class="font-medium">{{ currentUser?.email }}</span>
                             </div>
-                            <span class="font-medium">{{ currentUser?.email }}</span>
+                            <span>À l'instant</span>
                           </div>
-                          <span>À l'instant</span>
                         </div>
+                        @if (selectedCategory) {
+                          <div class="badge badge-primary">
+                            {{ selectedCategory.name }}
+                          </div>
+                        }
                       </div>
-                      <div *ngIf="selectedCategory" class="badge badge-primary">
-                        {{ selectedCategory.name }}
+                      <div class="prose max-w-none">
+                        <p class="text-sm leading-relaxed whitespace-pre-wrap">{{ postData.content }}</p>
                       </div>
-                    </div>
-                    <div class="prose max-w-none">
-                      <p class="text-sm leading-relaxed whitespace-pre-wrap">{{ postData.content }}</p>
                     </div>
                   </div>
                 </div>
-              </div>
+              }
 
-              <!-- Error Message -->
-              <div *ngIf="errorMessage" class="alert alert-error mt-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>{{ errorMessage }}</span>
-              </div>
+              @if (errorMessage) {
+                <div class="alert alert-error mt-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>{{ errorMessage }}</span>
+                </div>
+              }
 
               <!-- Actions -->
               <div class="card-actions justify-between mt-8">
@@ -197,7 +209,9 @@ import { AuthService } from '../../auth/auth.service';
                     class="btn btn-primary"
                     [disabled]="postForm.invalid || isSubmitting"
                   >
-                    <span *ngIf="isSubmitting" class="loading loading-spinner loading-sm"></span>
+                    @if (isSubmitting) {
+                      <span class="loading loading-spinner loading-sm"></span>
+                    }
                     {{ isSubmitting ? 'Publication...' : 'Publier le post' }}
                   </button>
                 </div>
@@ -206,25 +220,27 @@ import { AuthService } from '../../auth/auth.service';
           </div>
         </div>
 
-        <!-- Loading Categories -->
-        <div *ngIf="isLoadingCategories" class="alert alert-info mt-4">
-          <span class="loading loading-spinner loading-sm"></span>
-          <span>Chargement des catégories...</span>
-        </div>
-
-        <!-- No Categories -->
-        <div *ngIf="!isLoadingCategories && categories.length === 0" class="alert alert-warning mt-4">
-          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
-          </svg>
-          <div>
-            <h3 class="font-bold">Aucune catégorie disponible</h3>
-            <div class="text-xs">Vous devez créer au moins une catégorie avant de pouvoir publier un post.</div>
+        @if (isLoadingCategories) {
+          <div class="alert alert-info mt-4">
+            <span class="loading loading-spinner loading-sm"></span>
+            <span>Chargement des catégories...</span>
           </div>
-          <button class="btn btn-sm btn-primary" [routerLink]="['/forum/categories']">
-            Créer une catégorie
-          </button>
-        </div>
+        }
+
+        @if (!isLoadingCategories && categories.length === 0) {
+          <div class="alert alert-warning mt-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+            <div>
+              <h3 class="font-bold">Aucune catégorie disponible</h3>
+              <div class="text-xs">Vous devez créer au moins une catégorie avant de pouvoir publier un post.</div>
+            </div>
+            <button class="btn btn-sm btn-primary" [routerLink]="['/forum/categories']">
+              Créer une catégorie
+            </button>
+          </div>
+        }
       </div>
     </div>
   `

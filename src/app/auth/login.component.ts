@@ -27,9 +27,11 @@ import { AuthService } from './auth.service';
                 required
                 #emailInput="ngModel"
               />
-              <div *ngIf="emailInput.invalid && emailInput.touched" class="label">
-                <span class="label-text-alt text-error">Email valide requis</span>
-              </div>
+              @if (emailInput.invalid && emailInput.touched) {
+                <div class="label">
+                  <span class="label-text-alt text-error">Email valide requis</span>
+                </div>
+              }
             </div>
 
             <div class="form-control w-full mt-4">
@@ -45,17 +47,21 @@ import { AuthService } from './auth.service';
                 minlength="6"
                 #passwordInput="ngModel"
               />
-              <div *ngIf="passwordInput.invalid && passwordInput.touched" class="label">
-                <span class="label-text-alt text-error">Mot de passe requis (min. 6 caractères)</span>
-              </div>
+              @if (passwordInput.invalid && passwordInput.touched) {
+                <div class="label">
+                  <span class="label-text-alt text-error">Mot de passe requis (min. 6 caractères)</span>
+                </div>
+              }
             </div>
 
-            <div *ngIf="errorMessage" class="alert alert-error mt-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{{ errorMessage }}</span>
-            </div>
+            @if (errorMessage) {
+              <div class="alert alert-error mt-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{{ errorMessage }}</span>
+              </div>
+            }
 
             <div class="card-actions justify-end mt-6">
               <button 
@@ -63,7 +69,9 @@ import { AuthService } from './auth.service';
                 class="btn btn-primary w-full"
                 [disabled]="loginForm.invalid || isLoading"
               >
-                <span *ngIf="isLoading" class="loading loading-spinner loading-sm"></span>
+                @if (isLoading) {
+                  <span class="loading loading-spinner loading-sm"></span>
+                }
                 {{ isLoading ? 'Connexion...' : 'Se connecter' }}
               </button>
             </div>
@@ -84,9 +92,9 @@ import { AuthService } from './auth.service';
         </div>
       </div>
 
-      <!-- Registration Modal -->
-      <div *ngIf="showRegister" class="modal modal-open">
-        <div class="modal-box">
+      @if (showRegister) {
+        <div class="modal modal-open">
+          <div class="modal-box">
           <h3 class="font-bold text-lg mb-4">Créer un compte</h3>
           
           <form (ngSubmit)="onRegister()" #registerForm="ngForm">
@@ -157,9 +165,11 @@ import { AuthService } from './auth.service';
               />
             </div>
 
-            <div *ngIf="registerError" class="alert alert-error mt-4">
-              <span>{{ registerError }}</span>
-            </div>
+            @if (registerError) {
+              <div class="alert alert-error mt-4">
+                <span>{{ registerError }}</span>
+              </div>
+            }
 
             <div class="modal-action">
               <button 
@@ -174,13 +184,16 @@ import { AuthService } from './auth.service';
                 class="btn btn-primary"
                 [disabled]="registerForm.invalid || isRegistering"
               >
-                <span *ngIf="isRegistering" class="loading loading-spinner loading-sm"></span>
+                @if (isRegistering) {
+                  <span class="loading loading-spinner loading-sm"></span>
+                }
                 {{ isRegistering ? 'Création...' : 'Créer le compte' }}
               </button>
             </div>
           </form>
+          </div>
         </div>
-      </div>
+      }
     </div>
   `
 })
