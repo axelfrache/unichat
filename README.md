@@ -54,7 +54,6 @@ npm install -g @angular/cli
 ### Scripts disponibles
 ```bash
 ./start.sh                  # Démarre PocketBase + Angular (Linux/macOS)
-start.bat                   # Démarre PocketBase + Angular (Windows)
 npm start                   # Angular uniquement
 npm run build               # Build de production
 npm test                    # Tests
