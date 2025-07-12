@@ -9,11 +9,19 @@ Une application de forum universitaire moderne construite avec Angular 20, Tailw
 
 ## 🚀 Installation rapide
 
+### Option 1 : Développement local (recommandé)
 ```bash
 git clone https://github.com/axelfrache/unichat.git
 cd unichat
 npm install
 ./start.sh
+```
+
+### Option 2 : Docker
+```bash
+git clone https://github.com/axelfrache/unichat.git
+cd unichat
+docker compose up -d
 ```
 
 L'application sera accessible sur [http://localhost:4200](http://localhost:4200).
@@ -103,9 +111,8 @@ unichat/
 │   ├── Dockerfile.frontend       # Image frontend
 │   ├── Dockerfile.pocketbase     # Image PocketBase
 │   └── nginx.conf                # Configuration nginx
-├── start.sh / start.bat          # Scripts de démarrage locaux
-├── docker-manage.sh              # Script de gestion Docker
-├── docker-compose.yml            # Configuration Docker unique
+├── start.sh
+├── docker-compose.yml            # Configuration Docker
 └── package.json                  # Dépendances npm
 ```
 
@@ -114,11 +121,14 @@ unichat/
 ### Démarrage rapide avec Docker
 
 ```bash
-# Option 1: Script de gestion (recommandé)
-./docker-manage.sh dev
-
-# Option 2: Commande Docker directe
+# Démarrer les services
 docker compose up -d
+
+# Arrêter les services
+docker compose down
+
+# Voir les logs
+docker compose logs -f
 ```
 
 ### Prérequis Docker
@@ -131,24 +141,16 @@ docker --version          # >= 20.0.0
 docker compose version    # >= 2.0.0
 ```
 
-### Scripts Docker disponibles
+### Commandes Docker utiles
 ```bash
-./docker-manage.sh dev      # Démarrer en développement
-./docker-manage.sh stop     # Arrêter les services
-./docker-manage.sh restart  # Redémarrer les services
-./docker-manage.sh logs     # Voir les logs
-./docker-manage.sh clean    # Nettoyage complet
-./docker-manage.sh shell-pb # Shell PocketBase
-./docker-manage.sh shell-fe # Shell Frontend
+docker compose up -d        # Démarrer en arrière-plan
+docker compose down         # Arrêter les services
+docker compose restart     # Redémarrer les services
+docker compose logs -f     # Voir les logs en temps réel
+docker compose ps          # Voir l'état des conteneurs
 ```
 
 ### Accès aux services
 - **Frontend** : [http://localhost:4200](http://localhost:4200)
 - **PocketBase** : [http://localhost:8090](http://localhost:8090)
 - **Admin PocketBase** : [http://localhost:8090/_/](http://localhost:8090/_/)
-
-### Fonctionnalités
-- ✅ Hot-reload pour Angular
-- ✅ Données PocketBase persistantes
-- ✅ Un seul `docker-compose.yml`
-- ✅ Démarrage avec `docker compose up -d`
