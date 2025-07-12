@@ -2,6 +2,8 @@
 
 Une application de forum universitaire moderne construite avec Angular 20, Tailwind CSS, DaisyUI et PocketBase.
 
+🔗 **Repository GitHub** : [https://github.com/axelfrache/unichat](https://github.com/axelfrache/unichat)
+
 ![Angular](https://img.shields.io/badge/Angular-20-red?style=flat-square&logo=angular)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.0-cyan?style=flat-square&logo=tailwindcss)
