@@ -7,7 +7,7 @@ Une application de forum universitaire moderne construite avec Angular 20, Tailw
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.0-cyan?style=flat-square&logo=tailwindcss)
 ![DaisyUI](https://img.shields.io/badge/DaisyUI-5.0-green?style=flat-square)
 
-## Installation rapide
+## 🚀 Installation rapide
 
 ```bash
 git clone https://github.com/axelfrache/unichat.git
@@ -37,8 +37,19 @@ L'application sera accessible sur [http://localhost:4200](http://localhost:4200)
 ## Développement
 
 ### Prérequis
-- Node.js 18+ et npm
-- Git
+- **Node.js** 18+ et npm
+- **Angular CLI** 20+
+- **Git**
+
+```bash
+# Vérifier les versions
+node --version    # >= 18.0.0
+npm --version     # >= 9.0.0
+ng --version      # >= 20.0.0
+
+# Installer Angular CLI si nécessaire
+npm install -g @angular/cli
+```
 
 ### Scripts disponibles
 ```bash
@@ -89,6 +100,6 @@ unichat/
 ├── pocketbase/                   # Backend inclus
 │   ├── pocketbase                # Exécutable
 │   └── pb_data/                  # Base de données SQLite
-├── start.sh / start.bat          # Scripts de démarrage
+├── start.sh                      # Scripts de démarrage
 └── package.json                  # Dépendances npm
 ```
