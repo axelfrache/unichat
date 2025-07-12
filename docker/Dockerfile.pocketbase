@@ -1,0 +1,30 @@
+FROM alpine:latest
+
+RUN apk add --no-cache \
+    ca-certificates \
+    curl \
+    tzdata
+
+RUN addgroup -g 1000 pocketbase && \
+    adduser -D -s /bin/sh -u 1000 -G pocketbase pocketbase
+
+RUN mkdir -p /pb/pb_data /pb/pb_migrations && \
+    chown -R pocketbase:pocketbase /pb
+
+COPY pocketbase/pocketbase /usr/local/bin/pocketbase
+RUN chmod +x /usr/local/bin/pocketbase
+
+# Copier les migrations
+COPY pocketbase/pb_migrations /pb/pb_migrations
+
+RUN chown -R pocketbase:pocketbase /pb
+USER pocketbase
+WORKDIR /pb
+EXPOSE 8090
+ENV PB_DATA_DIR=/pb/pb_data
+ENV PB_PUBLIC_DIR=/pb/pb_public
+ENV PB_HOOKS_DIR=/pb/pb_hooks
+RUN pocketbase --help > /dev/null
+
+# Démarrer PocketBase
+CMD ["pocketbase", "serve", "--http=0.0.0.0:8090", "--dev"]

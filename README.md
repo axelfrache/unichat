@@ -99,6 +99,56 @@ unichat/
 ├── pocketbase/                   # Backend inclus
 │   ├── pocketbase                # Exécutable
 │   └── pb_data/                  # Base de données SQLite
-├── start.sh                      # Scripts de démarrage
+├── docker/                       # Configuration Docker
+│   ├── Dockerfile.frontend       # Image frontend
+│   ├── Dockerfile.pocketbase     # Image PocketBase
+│   └── nginx.conf                # Configuration nginx
+├── start.sh / start.bat          # Scripts de démarrage locaux
+├── docker-manage.sh              # Script de gestion Docker
+├── docker-compose.yml            # Configuration Docker unique
 └── package.json                  # Dépendances npm
 ```
+
+## 🐳 Docker
+
+### Démarrage rapide avec Docker
+
+```bash
+# Option 1: Script de gestion (recommandé)
+./docker-manage.sh dev
+
+# Option 2: Commande Docker directe
+docker compose up -d
+```
+
+### Prérequis Docker
+- **Docker** 20+ 
+- **Docker Compose** 2+
+
+```bash
+# Vérifier les versions
+docker --version          # >= 20.0.0
+docker compose version    # >= 2.0.0
+```
+
+### Scripts Docker disponibles
+```bash
+./docker-manage.sh dev      # Démarrer en développement
+./docker-manage.sh stop     # Arrêter les services
+./docker-manage.sh restart  # Redémarrer les services
+./docker-manage.sh logs     # Voir les logs
+./docker-manage.sh clean    # Nettoyage complet
+./docker-manage.sh shell-pb # Shell PocketBase
+./docker-manage.sh shell-fe # Shell Frontend
+```
+
+### Accès aux services
+- **Frontend** : [http://localhost:4200](http://localhost:4200)
+- **PocketBase** : [http://localhost:8090](http://localhost:8090)
+- **Admin PocketBase** : [http://localhost:8090/_/](http://localhost:8090/_/)
+
+### Fonctionnalités
+- ✅ Hot-reload pour Angular
+- ✅ Données PocketBase persistantes
+- ✅ Un seul `docker-compose.yml`
+- ✅ Démarrage avec `docker compose up -d`

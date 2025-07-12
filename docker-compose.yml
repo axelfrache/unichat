@@ -1,0 +1,55 @@
+services:
+  # Backend PocketBase avec données persistantes
+  pocketbase:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.pocketbase
+    container_name: unichat-pocketbase
+    ports:
+      - "8090:8090"
+    volumes:
+      # Monter les données locales pour persistance
+      - ./pocketbase/pb_data:/pb/pb_data
+      - ./pocketbase/pb_migrations:/pb/pb_migrations
+      - ./pb_schema.json:/pb/pb_schema.json:ro
+    environment:
+      - PB_ENCRYPTION_KEY=dev-secret-key
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - unichat-network
+
+  # Frontend Angular avec hot-reload
+  frontend:
+    image: node:20-slim
+    container_name: unichat-frontend
+    working_dir: /app
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - POCKETBASE_URL=http://pocketbase:8090
+      - CHOKIDAR_USEPOLLING=true
+    command: >
+      sh -c "npm install && npm start -- --host 0.0.0.0"
+    depends_on:
+      pocketbase:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - unichat-network
+
+volumes:
+  pocketbase_data:
+    driver: local
+
+networks:
+  unichat-network:
+    driver: bridge
