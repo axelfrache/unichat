@@ -15,9 +15,6 @@ git clone https://github.com/axelfrache/unichat.git
 cd unichat
 npm install
 ./start.sh
-
-# Vérifier le statut des services
-./check-status.sh
 ```
 
 ### Option 2 : Docker
@@ -65,7 +62,6 @@ npm install -g @angular/cli
 ### Scripts disponibles
 ```bash
 ./start.sh                  # Démarre PocketBase + Angular (Linux/macOS)
-./check-status.sh           # Vérifie l'état des services
 npm start                   # Angular uniquement
 npm run build               # Build de production
 npm test                    # Tests
