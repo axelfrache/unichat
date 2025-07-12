@@ -7,13 +7,13 @@ Une application de forum universitaire moderne construite avec Angular 20, Tailw
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.0-cyan?style=flat-square&logo=tailwindcss)
 ![DaisyUI](https://img.shields.io/badge/DaisyUI-5.0-green?style=flat-square)
 
-## 🚀 Installation rapide
+## Installation rapide
 
 ```bash
 git clone https://github.com/axelfrache/unichat.git
 cd unichat
 npm install
-./start.sh          # Linux/macOS ou start.bat (Windows)
+./start.sh
 ```
 
 L'application sera accessible sur [http://localhost:4200](http://localhost:4200).
