@@ -116,7 +116,7 @@ unichat/
 └── package.json                  # Dépendances npm
 ```
 
-## 🐳 Docker
+## Docker
 
 ### Démarrage rapide avec Docker
 
