@@ -15,6 +15,9 @@ git clone https://github.com/axelfrache/unichat.git
 cd unichat
 npm install
 ./start.sh
+
+# Vérifier le statut des services
+./check-status.sh
 ```
 
 ### Option 2 : Docker
@@ -62,6 +65,7 @@ npm install -g @angular/cli
 ### Scripts disponibles
 ```bash
 ./start.sh                  # Démarre PocketBase + Angular (Linux/macOS)
+./check-status.sh           # Vérifie l'état des services
 npm start                   # Angular uniquement
 npm run build               # Build de production
 npm test                    # Tests
@@ -154,3 +158,36 @@ docker compose ps          # Voir l'état des conteneurs
 - **Frontend** : [http://localhost:4200](http://localhost:4200)
 - **PocketBase** : [http://localhost:8090](http://localhost:8090)
 - **Admin PocketBase** : [http://localhost:8090/_/](http://localhost:8090/_/)
+
+## Résolution des problèmes
+
+#### Problème de permissions avec Angular
+Si vous rencontrez une erreur `EACCES: permission denied` avec le cache Angular :
+
+```bash
+# Nettoyer complètement les caches et node_modules
+sudo rm -rf .angular/cache node_modules/.cache
+sudo chown -R $USER:$USER .
+rm -rf node_modules package-lock.json
+
+# Réinstaller les dépendances avec les bonnes permissions
+npm install
+
+# Relancer l'application
+npm start
+```
+
+#### Problème de ports occupés
+Si les ports 4200 ou 8090 sont déjà utilisés :
+
+```bash
+# Arrêter les processus Angular en cours
+pkill -f "ng serve"
+
+# Vérifier les processus utilisant les ports
+sudo lsof -i :4200
+sudo lsof -i :8090
+
+# Arrêter les conteneurs Docker si nécessaire
+docker compose down
+```
