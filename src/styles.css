@@ -1,12 +1,10 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-/* Custom CSS for UniChat */
 html {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* Focus states for better accessibility */
 .btn:focus,
 .input:focus,
 .textarea:focus,
@@ -15,7 +13,6 @@ html {
   outline-offset: 2px;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -33,23 +30,19 @@ html {
   background: #94A3B8;
 }
 
-/* Smooth transitions */
 * {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-/* Active link styling */
 .router-link-active {
   color: #3B82F6 !important;
   font-weight: 600;
 }
 
-/* Loading animation improvements */
 .loading {
   animation: spin 1s linear infinite;
 }
 
-/* Text truncation utility */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

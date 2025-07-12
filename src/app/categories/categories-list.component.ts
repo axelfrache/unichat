@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { PocketbaseApiService, Category, ListResponse } from '../services/pocketbase-api.service';
+import { PocketbaseApiService, Category } from '../services/pocketbase-api.service';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -46,7 +46,7 @@ import { AuthService } from '../auth/auth.service';
             <h1 class="text-3xl font-bold">Gestion des catégories</h1>
             <p class="text-base-content/70 mt-1">Organisez les discussions par thématiques</p>
           </div>
-          <button 
+          <button
             class="btn btn-primary"
             (click)="openCreateModal()"
           >
@@ -58,28 +58,33 @@ import { AuthService } from '../auth/auth.service';
         </div>
 
         <!-- Loading -->
-        <div *ngIf="isLoading" class="flex justify-center py-12">
-          <span class="loading loading-spinner loading-lg"></span>
-        </div>
+        @if (isLoading) {
+          <div class="flex justify-center py-12">
+            <span class="loading loading-spinner loading-lg"></span>
+          </div>
+        }
 
         <!-- Categories Grid -->
-        <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div *ngFor="let category of categories; trackBy: trackByCategoryId" 
-               class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+        @if (!isLoading) {
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            @for (category of categories; track category.id) {
+              <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
             <div class="card-body">
               <div class="flex items-start justify-between">
                 <div class="flex-1">
                   <h2 class="card-title">
                     {{ category.name }}
                   </h2>
-                  <p class="text-base-content/70 text-sm mt-2" *ngIf="category.description">
-                    {{ category.description }}
-                  </p>
+                  @if (category.description) {
+                    <p class="text-base-content/70 text-sm mt-2">
+                      {{ category.description }}
+                    </p>
+                  }
                   <div class="text-xs text-base-content/50 mt-2">
                     Créée {{ formatDate(category.created) }}
                   </div>
                 </div>
-                
+
                 <div class="dropdown dropdown-end">
                   <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -93,23 +98,27 @@ import { AuthService } from '../auth/auth.service';
                 </div>
               </div>
             </div>
-          </div>
+            </div>
+            }
 
-          <!-- Empty state -->
-          <div *ngIf="categories.length === 0" class="col-span-full text-center py-12">
-            <div class="text-6xl mb-4">📁</div>
-            <h3 class="text-xl font-bold mb-2">Aucune catégorie</h3>
-            <p class="text-base-content/70 mb-4">
-              Créez votre première catégorie pour organiser les discussions.
-            </p>
-            <button 
-              class="btn btn-primary"
-              (click)="openCreateModal()"
-            >
-              Créer une catégorie
-            </button>
+            <!-- Empty state -->
+            @if (categories.length === 0) {
+              <div class="col-span-full text-center py-12">
+                <div class="text-6xl mb-4">📁</div>
+                <h3 class="text-xl font-bold mb-2">Aucune catégorie</h3>
+                <p class="text-base-content/70 mb-4">
+                  Créez votre première catégorie pour organiser les discussions.
+                </p>
+                <button
+                  class="btn btn-primary"
+                  (click)="openCreateModal()"
+                >
+                  Créer une catégorie
+                </button>
+              </div>
+            }
           </div>
-        </div>
+        }
 
         <!-- Create/Edit Modal -->
         <div class="modal" [class.modal-open]="showModal">
@@ -117,7 +126,7 @@ import { AuthService } from '../auth/auth.service';
             <h3 class="font-bold text-lg mb-4">
               {{ editingCategory ? 'Modifier la catégorie' : 'Nouvelle catégorie' }}
             </h3>
-            
+
             <form (ngSubmit)="onSubmit()" #categoryForm="ngForm">
               <!-- Name -->
               <div class="form-control w-full">
@@ -125,11 +134,11 @@ import { AuthService } from '../auth/auth.service';
                   <span class="label-text">Nom de la catégorie</span>
                   <span class="label-text-alt text-error">*</span>
                 </label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   [(ngModel)]="categoryData.name"
                   name="name"
-                  class="input input-bordered w-full" 
+                  class="input input-bordered w-full"
                   required
                   minlength="2"
                   maxlength="50"
@@ -148,10 +157,10 @@ import { AuthService } from '../auth/auth.service';
                 <label class="label">
                   <span class="label-text">Description (optionnelle)</span>
                 </label>
-                <textarea 
+                <textarea
                   [(ngModel)]="categoryData.description"
                   name="description"
-                  class="textarea textarea-bordered h-20" 
+                  class="textarea textarea-bordered h-20"
                   maxlength="200"
                 ></textarea>
                 <label class="label">
@@ -165,15 +174,15 @@ import { AuthService } from '../auth/auth.service';
               </div>
 
               <div class="modal-action">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   class="btn btn-ghost"
                   (click)="closeModal()"
                 >
                   Annuler
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   class="btn btn-primary"
                   [disabled]="categoryForm.invalid || isSubmitting"
                 >
@@ -194,12 +203,14 @@ import { AuthService } from '../auth/auth.service';
             </p>
             <div class="modal-action">
               <button class="btn btn-ghost" (click)="cancelDelete()">Annuler</button>
-              <button 
-                class="btn btn-error" 
+              <button
+                class="btn btn-error"
                 (click)="confirmDelete()"
                 [disabled]="isDeleting"
               >
-                <span *ngIf="isDeleting" class="loading loading-spinner loading-sm"></span>
+                @if (isDeleting) {
+                  <span class="loading loading-spinner loading-sm"></span>
+                }
                 {{ isDeleting ? 'Suppression...' : 'Supprimer' }}
               </button>
             </div>

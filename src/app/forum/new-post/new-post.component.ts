@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { PocketbaseApiService, Category, ListResponse } from '../../services/pocketbase-api.service';
+import { PocketbaseApiService, Category } from '../../services/pocketbase-api.service';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
@@ -56,11 +56,11 @@ import { AuthService } from '../../auth/auth.service';
                   <span class="label-text font-medium">Titre du post</span>
                   <span class="label-text-alt text-error">*</span>
                 </label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   [(ngModel)]="postData.title"
                   name="title"
-                  class="input input-bordered w-full" 
+                  class="input input-bordered w-full"
                   required
                   minlength="5"
                   maxlength="200"
@@ -82,10 +82,10 @@ import { AuthService } from '../../auth/auth.service';
                   <span class="label-text font-medium">Catégorie</span>
                   <span class="label-text-alt text-error">*</span>
                 </label>
-                <select 
+                <select
                   [(ngModel)]="postData.category"
                   name="category"
-                  class="select select-bordered w-full" 
+                  class="select select-bordered w-full"
                   required
                   #categoryInput="ngModel"
                 >
@@ -117,10 +117,10 @@ import { AuthService } from '../../auth/auth.service';
                   <span class="label-text-alt text-error">*</span>
                 </label>
                 <div class="mt-2">
-                  <textarea 
+                  <textarea
                     [(ngModel)]="postData.content"
                     name="content"
-                    class="textarea textarea-bordered w-full h-48 resize-none" 
+                    class="textarea textarea-bordered w-full h-48 resize-none"
                     required
                     minlength="10"
                     maxlength="5000"
@@ -183,8 +183,8 @@ import { AuthService } from '../../auth/auth.service';
               <!-- Actions -->
               <div class="card-actions justify-between mt-8">
                 <div class="flex gap-2">
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     class="btn btn-outline btn-sm"
                     (click)="togglePreview()"
                   >
@@ -197,15 +197,15 @@ import { AuthService } from '../../auth/auth.service';
                 </div>
 
                 <div class="flex gap-2">
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     class="btn btn-ghost"
                     [routerLink]="['/forum']"
                   >
                     Annuler
                   </button>
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     class="btn btn-primary"
                     [disabled]="postForm.invalid || isSubmitting"
                   >
